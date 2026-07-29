@@ -6,18 +6,14 @@ import numpy as np
 # ==========================================
 st.set_page_config(page_title="Sport & College Planner | 智能体教规划", layout="centered", page_icon="🏅")
 
-# 解决多语言状态丢失的 Bug
 if 'lang' not in st.session_state:
     st.session_state.lang = "中文"
 
-# 心理测试分数映射表 (严格索引映射)
 SCORE_MAP = [2, 5, 8, 10]
-
-# 标记“藤校/高录取率”的运动（用于升学目标反向加权）
 IVY_SPORTS = ["击剑 / Fencing", "赛艇 / Rowing-Crew", "高尔夫 / Golf", "网球 / Tennis", "马术 / Equestrian", "长曲棍球 / Lacrosse"]
 
 # ==========================================
-# 2. 多语言字典库 (修复了遗漏的 KeyError 变量)
+# 2. 多语言字典库 (满血还原深度科普文案)
 # ==========================================
 UI = {
     "中文": {
@@ -26,10 +22,25 @@ UI = {
         "sidebar_title": "偏好设置",
         "faq_title": "👉 家长必看：什么是 NCAA？为什么科技圈都在卷体育爬藤？",
         "faq_content": """
-        **体育是通往美国顶尖大学的超级捷径**。NCAA 将大学体育分为三个级别，玩法完全不同：
-        🏆 **Division I (D1) - 全额奖学金**：竞技水平极高，适合极具天赋且能全职投入的家庭。
-        🥈 **Division II (D2) - 高性价比**：提供部分奖学金，但常春藤等顶尖学术名校不在这个级别。
-        🎓 **Division III (D3) - 常春藤名校的聚集地（核心重点！）**：包含哈佛、耶鲁、MIT等。**D3 不发体育奖学金！** 但教练有**“招生办支持权 (Admissions Support)”**。只要孩子特长被看中，且 GPA 达标，教练就能直接去招生办把你“特招”进去，挤掉那些满分 GPA 但毫无特色的普通学霸！
+        很多家长以为：“我又不想让娃做职业运动员，练这么苦有什么用？”
+        
+        其实，**体育是通往美国顶尖大学的超级捷径**。NCAA（全美大学体育协会）将大学体育分为了三个级别，玩法完全不同：
+        
+        🏆 **Division I (D1) - 顶级竞技场与全额奖学金**
+        * **特点**：竞技水平极高，竞争最惨烈。
+        * **回报**：大学会发放“全额体育奖学金 (Full Ride)”，相当于四年省下二三十万美金。
+        * **适合**：极具天赋，且家庭愿意投入大量时间金钱打全美巡回赛的选手。
+        
+        🥈 **Division II (D2) - 高性价比的平衡区**
+        * **特点**：竞技水平中上，提供部分奖学金 (Partial Scholarship)。
+        * **回报**：能拿到钱，且没 D1 那么内卷。但注意，常春藤等最顶尖的学术名校不在这个级别。
+        
+        🎓 **Division III (D3) - 常春藤名校的聚集地（核心重点！）**
+        * **特点**：包含哈佛、耶鲁等所有常春藤名校，以及 MIT、芝加哥大学等顶尖学府。
+        * **规则**：D3 绝对不发体育奖学金！
+        * **玩法**：教练手里掌握着极其宝贵的**“招生办支持权 (Admissions Support)”**。只要孩子有某项特长被教练看中，进入了教练的招募名单 (Recruit List)，并且高中的 GPA 达到了大学的基础门槛，教练就能直接去招生办要人。**你家孩子可以直接挤掉那些满分 GPA 但毫无特色、只能走常规申请 (Regular Decision) 的普通学霸！**
+        
+        **结论：体育练的不是肌肉，练的是顶尖名校最看重的：逆商、专注力与领导力。**
         """,
         "step1": "📝 第一步：身体硬件评估",
         "step1_cap": "填入真实的家庭数据，AI 将预估孩子的成年身高及发育特征。",
@@ -81,12 +92,9 @@ UI = {
         "error_miss": "⚠️ 测评失败：您有漏选的必填项目！",
         "success": "✅ 计算完毕！专属深度诊断报告如下：",
         "res1_title": "🧬 诊断一：身体硬件与发育预估",
-        
-        # 补回遗漏的变量
         "target_h": "预估成年身高 (Target Height)",
         "ape_index": "预估臂展特征 (Ape Index)",
         "foot_trait": "终端力学预判 (Foot Trait)",
-        
         "res2_title": "🎯 诊断二：AI 推荐【最高契合度】的三项运动 (红榜)",
         "res_worst_title": "⛔ 诊断三：AI 建议【避坑】的三项运动 (黑名单)",
         "res4_title": "⚠️ 诊断四：精力生态与防坑预警",
@@ -102,10 +110,25 @@ UI = {
         "sidebar_title": "Preferences",
         "faq_title": "👉 Must Read: What is the NCAA? Why are Tech Parents Obsessed?",
         "faq_content": """
-        **Sports are the ultimate shortcut to elite US universities.**
-        🏆 **Division I (D1)**: Full Athletic Scholarships saving $200k+. For extreme talents.
-        🥈 **Division II (D2)**: Partial scholarships. Great ROI but lacks Ivy League schools.
-        🎓 **Division III (D3)**: Home to Harvard, Yale, MIT, etc. **D3 does NOT offer athletic money.** But Coaches hold **"Admissions Support"**. They can pull your child directly into the school, bypassing applicants with perfect GPAs but no sports!
+        Many parents think: "I don't want my kid to be a pro athlete, why train so hard?"
+
+        In reality, **sports are the ultimate shortcut to elite US universities.** The NCAA divides college sports into three divisions with very different rules:
+
+        🏆 **Division I (D1) - Elite Competition & Full Scholarships**
+        * **Level**: The highest and most ruthless level of competition.
+        * **Reward**: Coaches offer "Full Athletic Scholarships", saving $200k-$300k over four years.
+        * **Fit**: For extremely talented athletes whose families can invest heavily in travel teams.
+
+        🥈 **Division II (D2) - The Balanced Zone**
+        * **Level**: High-level competition.
+        * **Reward**: Offers Partial Scholarships. Great ROI, but top-tier academic schools (Ivy League) are not here.
+
+        🎓 **Division III (D3) - The Ivy League Hack (Crucial!)**
+        * **Level**: Home to the Ivy League (Harvard, Yale), MIT, UChicago, etc.
+        * **Rule**: D3 does NOT offer athletic scholarships.
+        * **The Hack**: Coaches hold a golden ticket called **"Admissions Support"**. If a coach wants your child on their team, and your child's GPA meets the academic baseline, the coach can pull them directly into the school. **Your child can bypass thousands of regular applicants who have perfect GPAs but no athletic edge!**
+
+        **Conclusion: We aren't training muscles; we are training Grit, Focus, and Leadership.**
         """,
         "step1": "📝 Step 1: Physical Hardware",
         "step1_cap": "Enter real family data to predict adult traits.",
@@ -157,12 +180,9 @@ UI = {
         "error_miss": "⚠️ Error: Missing inputs!",
         "success": "✅ Data processed! Your report:",
         "res1_title": "🧬 Diagnosis 1: Physical Projections",
-        
-        # 补回遗漏的变量
         "target_h": "Projected Target Height",
         "ape_index": "Projected Ape Index (Wingspan)",
         "foot_trait": "Terminal Biomechanics (Feet)",
-        
         "res2_title": "🎯 Diagnosis 2: Top 3 Highly Recommended Sports",
         "res_worst_title": "⛔ Diagnosis 3: Top 3 Sports to AVOID (Blacklist)",
         "res4_title": "⚠️ Diagnosis 4: Burnout & Time Warning",
@@ -176,7 +196,6 @@ UI = {
 
 # ==========================================
 # 3. 22项 NCAA 全系运动数据库
-# 维度: [0身高, 1臂展, 2水感/脚, 3柔韧, 4对抗爆发, 5逆商Grit, 6耐无聊, 7策略逻辑, 8社交团队, 9烧钱指数]
 # ==========================================
 SPORTS_DB = {
     "游泳 / Swimming (NCAA D1/D2/D3)": np.array([0.7, 0.9, 1.0, 0.4, 0.6, 0.5, 1.0, 0.2, 0.1, 0.4]),
@@ -212,19 +231,15 @@ def generate_dynamic_reasoning(sport_name, sport_vec, user_vec, is_top, col_idx,
     dims = dims_cn if lang == "中文" else dims_en
 
     reason_text = ""
-    
     if is_top:
         match_scores = sport_vec * user_vec
         best_dim_idx = np.argmax(match_scores)
-        
         if lang == "中文":
             reason_text += f"✔️ **核心出成绩因素**：该项目极其依赖【{dims[best_dim_idx]}】，而您孩子在此项上拥有极高的先天优势，出成绩的概率远高于普通人。\n"
-            
             if sport_vec[9] <= 0.5 and user_vec[9] < 0.8:
                 reason_text += f"✔️ **超高性价比 (ROI)**：系统检测到您的预算偏向理智型。此项目主要依靠身体天赋和刻苦，**不需要砸重金跨州打比赛**，是中产家庭实现“低开高走”的最佳杠杆。\n"
             elif sport_vec[9] > 0.7 and user_vec[9] >= 0.8:
                 reason_text += f"✔️ **资金壁垒 (护城河)**：您填写的预算非常充足。此项目极度烧钱，**您可以用资金直接帮孩子过滤掉 80% 的普通家庭竞争者**，在赛道里形成绝对的“降维打击”。\n"
-            
             if col_idx == 2 and any(ivy_sport in sport_name for ivy_sport in IVY_SPORTS):
                 reason_text += f"✔️ **藤校专属密码**：您选择了冲刺常春藤/MIT。算法为您拉高了此项目的权重，因为它是典型的 **Ivy League 传统老钱运动**，在 D3 招生办支持系统中拥有极其可怕的绿灯通行权。\n"
         else:
@@ -233,21 +248,17 @@ def generate_dynamic_reasoning(sport_name, sport_vec, user_vec, is_top, col_idx,
                 reason_text += f"✔️ **High ROI**：Matches your rational budget. Relies on hard work rather than expensive travel teams.\n"
             elif col_idx == 2 and any(ivy_sport in sport_name for ivy_sport in IVY_SPORTS):
                 reason_text += f"✔️ **Ivy League Hack**：Since you target Ivy/MIT, this traditional sport offers massive leverage in D3 Admissions Support.\n"
-
     else:
         deficits = sport_vec - user_vec
         worst_dim_idx = np.argmax(deficits)
-        
         if lang == "中文":
             reason_text += f"❌ **硬件/性格严重不符**：此项目对【{dims[worst_dim_idx]}】有着极高的要求，但提取输入后发现孩子在此维度上极度欠缺。强行练这项运动不仅难出成绩，还会让孩子陷入深度的自我怀疑。\n"
-            
             if sport_vec[9] > 0.7 and user_vec[9] < 0.5:
                 reason_text += f"❌ **资金破产预警**：您设定的预算有限，但这是一项无底洞级别的“烧钱运动”。即使孩子有天赋，后期也会因无法支付昂贵的私教和全美巡回赛费用而被残酷淘汰。\n"
         else:
             reason_text += f"❌ **Mismatch Warning**：This sport demands extreme 【{dims[worst_dim_idx]}】, which is currently a critical deficit for your child.\n"
             if sport_vec[9] > 0.7 and user_vec[9] < 0.5:
                 reason_text += f"❌ **Budget Alert**：Your budget does not match the heavy financial requirements of this elite sport.\n"
-
     return reason_text
 
 def generate_personalized_plan(sport, age, hours, status_idx, curr_sport_str, col_idx, acad_idx, lang):
