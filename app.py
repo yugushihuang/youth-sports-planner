@@ -6,21 +6,21 @@ import numpy as np
 # ==========================================
 st.set_page_config(page_title="Sport & College Planner | 智能体教规划", layout="centered", page_icon="🏅")
 
+# 初始化语言状态
 if 'lang' not in st.session_state:
     st.session_state.lang = "中文"
 
-# 心理测试分数映射表 (严格索引映射)
+# 心理测试分数映射表 (严格索引映射，绝不报错)
 SCORE_MAP = [2, 5, 8, 10]
 
 # ==========================================
-# 2. 完整无缺的多语言字典与配置库 (i18n)
+# 2. 完整的多语言字典库 (i18n)
 # ==========================================
 UI = {
     "中文": {
         "title": "测一测：你的孩子最适合什么运动？",
         "subtitle": "西雅图大厂工程师数据建模 ✖️ NCAA 升学底层逻辑。算出身心契合度最高的“体教双轨”路线。",
-        "sidebar_title": "⚙️ 偏好设置",
-        "lang_switch": "🌐 语言 / Language",
+        "sidebar_title": "偏好设置",
         "faq_title": "👉 家长必看：什么是 NCAA？为什么科技圈都在卷体育爬藤？",
         "faq_content": """
         很多家长以为：“我又不想让娃做职业运动员，练这么苦有什么用？”
@@ -60,7 +60,6 @@ UI = {
         
         "step3": "🧠 第三步：场景化性格测试",
         "step3_cap": "不要猜测分数，请直接根据孩子在生活中的真实反应“对号入座”。",
-        
         "psy_focus": "1. 【耐无聊指数】面对练琴、写字等枯燥任务时：",
         "psy_focus_opt": ["极易分心，5分钟就坐不住", "偶尔能坚持，但需要大人盯", "能沉浸在自己的世界里半小时以上", "极度专注，一旦投入打雷都不理会"],
         "psy_grit": "2. 【受挫恢复力】比赛或玩游戏输了时：",
@@ -94,8 +93,7 @@ UI = {
     "English": {
         "title": "Which Sport is Best for Your Child?",
         "subtitle": "Seattle Big Tech Data Modeling ✖️ NCAA Recruiting Logic.",
-        "sidebar_title": "⚙️ Preferences",
-        "lang_switch": "🌐 Language / 语言",
+        "sidebar_title": "Preferences",
         "faq_title": "👉 Must Read: What is the NCAA? Why are Tech Parents Obsessed?",
         "faq_content": """
         **Sports are the ultimate shortcut to elite US universities.**
@@ -149,7 +147,7 @@ UI = {
         "psy_aggro_opt": ["Afraid of contact", "Normal", "Enjoys light wrestling", "Loves collisions"],
         
         "submit": "🚀 Launch AI Matching Engine",
-        "error_miss": "⚠️ Error: Missing inputs!",
+        "error_miss": "⚠️ Error: Missing inputs! Please fill all fields.",
         "success": "✅ Data processed! Your report:",
         "res1_title": "🧬 Diagnosis 1: Physical Projections",
         "target_h": "Projected Target Height",
@@ -166,8 +164,8 @@ UI = {
 }
 
 # ==========================================
-# 3. 超大型 NCAA 全系运动数据库 (22项)
-# 向量维度: [身高红利, 臂展红利, 水感/脚码, 柔韧控制, 爆发力, 抗挫折力, 耐无聊度, 策略烧脑, 团队协作, 烧钱指数]
+# 3. 22项 NCAA 全系运动数据库
+# 维度: [身高红利, 臂展红利, 水感/脚码, 柔韧控制, 爆发力, 抗挫折力, 耐无聊度, 策略烧脑, 团队协作, 烧钱指数]
 # ==========================================
 SPORTS_DB = {
     # --- 水上运动 (Aquatics) ---
@@ -191,18 +189,18 @@ SPORTS_DB = {
     "足球 / Soccer (NCAA D1/D2/D3)": np.array([0.5, 0.4, 0.1, 0.5, 0.8, 0.7, 0.5, 0.8, 1.0, 0.4]),
     "长曲棍球 / Lacrosse (NCAA D1/D2/D3)": np.array([0.6, 0.7, 0.1, 0.4, 0.8, 0.7, 0.4, 0.8, 0.9, 0.7]),
     "曲棍球 / Field Hockey (NCAA D1/D2/D3)": np.array([0.5, 0.5, 0.1, 0.6, 0.8, 0.7, 0.5, 0.8, 0.9, 0.6]),
-    "棒球_垒球 / Baseball & Softball (NCAA D1/D2/D3)": np.array([0.6, 0.7, 0.1, 0.6, 0.7, 0.7, 0.7, 0.9, 0.8, 0.6]),
+    "棒垒球 / Baseball & Softball (NCAA D1/D2/D3)": np.array([0.6, 0.7, 0.1, 0.6, 0.7, 0.7, 0.7, 0.9, 0.8, 0.6]),
     "冰球 / Ice Hockey (NCAA D1/D2/D3)": np.array([0.6, 0.6, 0.1, 0.5, 1.0, 0.8, 0.6, 0.8, 0.9, 0.9]),
     
     # --- 速度与力量 (Speed & Power) ---
-    "田径-短跑跳跃 / Track & Field - Sprints (NCAA D1/D2/D3)": np.array([0.8, 0.6, 0.1, 0.6, 1.0, 0.7, 0.7, 0.2, 0.1, 0.2]),
+    "田径-短跑跳跃 / Track & Field (NCAA D1/D2/D3)": np.array([0.8, 0.6, 0.1, 0.6, 1.0, 0.7, 0.7, 0.2, 0.1, 0.2]),
     "越野长跑 / Cross Country (NCAA D1/D2/D3)": np.array([0.4, 0.4, 0.1, 0.3, 0.3, 0.9, 1.0, 0.4, 0.6, 0.2]),
     "摔跤 / Wrestling (NCAA D1/D2/D3)": np.array([0.2, 0.4, 0.1, 0.8, 0.9, 0.9, 0.5, 0.6, 0.1, 0.2]),
     "滑雪 / Skiing (NCAA Mixed)": np.array([0.5, 0.5, 0.1, 0.8, 0.8, 0.9, 0.8, 0.6, 0.2, 0.9])
 }
 
 # ==========================================
-# 4. 动态个性化计划生成引擎 (AI Engine)
+# 4. 核心 AI 建议引擎 (精准到小时的执行蓝图)
 # ==========================================
 def generate_personalized_plan(sport, age, hours, budget_idx, acad_idx, lang):
     phase_cn = "探索采样期 (Sampling Phase)" if age <= 10 else "专项突破期 (Specialization Phase)"
@@ -215,7 +213,7 @@ def generate_personalized_plan(sport, age, hours, budget_idx, acad_idx, lang):
     
     if lang == "中文":
         md = f"#### 📅 针对 {age} 岁孩子的【{sport}】深度定制计划\n"
-        md += f"**📍 当前阶段定位**：{phase_cn}。这个年龄段切忌过度追求单一项目的成绩，核心是打磨神经肌肉记忆和保持兴趣，为青春期后的爆发蓄力。\n\n"
+        md += f"**📍 当前阶段定位**：{phase_cn}。这个年龄段切忌过度追求单一项目的成绩，核心是打磨神经肌肉记忆，为青春期后的爆发蓄力。\n\n"
         md += f"**⏱️ 精力分配矩阵 ({hours}小时/周)**：\n"
         md += f"- 🏅 **专项技术 ({s_hrs}h)**：主攻 {sport} 的核心技术动作。\n"
         md += f"- 🏋️ **跨项体能 ({c_hrs}h)**：千万别只练单项！必须用这部分时间练核心力量（如基础体操、跑跳），防止单侧肌肉过度劳损。\n"
@@ -223,16 +221,16 @@ def generate_personalized_plan(sport, age, hours, budget_idx, acad_idx, lang):
         
         md += f"**💰 资金与路径策略**："
         if budget_idx == 2:
-            md += "系统检测到预算极其充足。建议跳过大锅饭式的训练，直接寻找有 NCAA D1 背景的退役教练进行 1v1 私教，并提前注册全国协会账号准备跨州积分赛。\n\n"
+            md += "系统检测到预算极其充足。建议跳过大锅饭式的训练，直接寻找有 NCAA D1 背景的退役教练进行 1v1 私教，并提前准备跨州积分赛。\n\n"
         else:
             md += "性价比最高的路线：加入本地高水平 Club 的第一梯队，利用大班高强度的对抗氛围提升竞技状态，将大额资金留到 12 岁以后的关键招募期使用。\n\n"
             
         if acad_idx >= 2:
-            md += f"**📚 学霸双轨护城河**：您对学业要求极高（竞赛级/超前）。**防坑警告**：千万不要在周一到周四晚上安排极度消耗体力的无氧训练！把耗体力的训练堆在周末，平时晚上必须留给数学与阅读拓展。**在 NCAA 招募中，高 GPA 是教练帮你去招生办要人的最后底牌。**"
+            md += f"**📚 学霸双轨护城河**：您对学业要求极高。**防坑警告**：千万不要在周一到周四晚上安排极度消耗体力的训练！把耗体能的训练堆在周末，平时晚上必须留给数学与阅读。**在 NCAA 招募中，高 GPA 是教练帮你去招生办要人的最后底牌。**"
     else:
         md = f"#### 📅 {age}-Year-Old {sport} Custom Blueprint\n"
         md += f"**📍 Phase**：{phase_en}. Focus on neuromuscular memory and passion, not just winning medals right now.\n"
-        md += f"**⏱️ Time Allocation ({hours}h/wk)**: {s_hrs}h on-sport tech, {c_hrs}h cross-training (core/gymnastics to prevent overuse injuries), {r_hrs}h mandatory recovery/stretching.\n"
+        md += f"**⏱️ Time Allocation ({hours}h/wk)**: {s_hrs}h on-sport tech, {c_hrs}h cross-training (core/gymnastics to prevent overuse injuries), {r_hrs}h mandatory recovery.\n"
         if budget_idx == 2: md += "**💰 Strategy**: Budget allows for 1v1 ex-NCAA coaches. Start collecting national points.\n"
         else: md += "**💰 Strategy**: Join a highly competitive local club A-team. Save heavy spending for post-12 years old recruiting windows.\n"
         if acad_idx >= 2: md += "**📚 Academic Buffer**: Do NOT schedule heavy physical workouts on weeknights. Save weeknights for math/GPA prep. A high GPA is the ultimate leverage in NCAA recruiting."
@@ -241,10 +239,10 @@ def generate_personalized_plan(sport, age, hours, budget_idx, acad_idx, lang):
 def generate_athletic_enhancement(flex, aggro, focus, grit, lang):
     md = "#### 🔧 弱项补偿与底层能力提升指南\n" if lang == "中文" else "#### 🔧 Core Athletic Enhancement Plan\n"
     if lang == "中文":
-        if flex <= 5: md += "- 🤸 **柔韧性赤字补偿**：系统检测到孩子身体略显僵硬。每天睡前必须增加 15 分钟静态拉伸（如坐姿体前屈）。柔韧性不足会极大增加未来韧带撕裂的风险。\n"
+        if flex <= 5: md += "- 🤸 **柔韧性赤字补偿**：检测到孩子身体略显僵硬。每天睡前必须增加 15 分钟静态拉伸。柔韧性不足会极大增加未来韧带撕裂的风险。\n"
         if aggro <= 5: md += "- 🛡️ **对抗脱敏训练**：孩子目前比较抗拒肢体冲突。建议在家进行轻度的“抢枕头、拔河”等游戏，帮助大脑对物理接触产生安全脱敏。\n"
         if focus <= 5: md += "- ⏱️ **注意力切片法**：孩子难以长时间忍受枯燥。不要强制练一小时，采用“15分钟极度专注+3分钟游戏奖励”的番茄工作法，逐步拉长耐受区间。\n"
-        if grit <= 5: md += "- 🧠 **逆商 (Grit) 刻意练习**：输了容易崩溃或放弃。在日常生活中刻意创造“稍微踮起脚尖才能赢”的微小挫折场景。当孩子在逆境中反败为胜时，狠狠表扬其**过程中的坚持**，而不是结果。\n"
+        if grit <= 5: md += "- 🧠 **逆商 (Grit) 刻意练习**：输了容易崩溃或放弃。在日常生活中刻意创造“稍微踮起脚尖才能赢”的微小挫折场景。狠狠表扬其过程中的坚持，而不是结果。\n"
     else:
         if flex <= 5: md += "- 🤸 **Flexibility Deficit**: Add 15m daily static stretching to prevent future ligament tears.\n"
         if aggro <= 5: md += "- 🛡️ **Contact Confidence**: Play light wrestling/tug-of-war games at home to desensitize the brain to physical contact.\n"
@@ -253,15 +251,27 @@ def generate_athletic_enhancement(flex, aggro, focus, grit, lang):
     return md
 
 # ==========================================
-# 5. 前端 UI 渲染
+# 5. 侧边栏与绝对安全的语言切换机制
 # ==========================================
-st.sidebar.markdown(f"### {UI[st.session_state.lang]['sidebar_title']}")
-selected_lang = st.sidebar.radio(UI[st.session_state.lang]['lang_switch'], ["中文", "English"])
+st.sidebar.markdown(f"### ⚙️ {UI[st.session_state.lang]['sidebar_title']}")
+
+# 修复核心 BUG：给 Radio 绑定一个永远不变的静态 Label 和 Key，彻底阻断状态丢失
+selected_lang = st.sidebar.radio(
+    "🌐 语言切换 / Language Switch", 
+    ["中文", "English"],
+    index=0 if st.session_state.lang == "中文" else 1,
+    key="static_lang_radio_key"
+)
+
 if selected_lang != st.session_state.lang:
     st.session_state.lang = selected_lang
     st.rerun()
+
 t = UI[st.session_state.lang]
 
+# ==========================================
+# 6. 前端 UI 与表单收集
+# ==========================================
 st.title(t["title"])
 st.markdown(t["subtitle"])
 with st.expander(t["faq_title"], expanded=False): st.markdown(t["faq_content"])
@@ -304,10 +314,11 @@ with st.form("main_form"):
     psy_social_ans = st.selectbox(t["psy_social"], options=t["psy_social_opt"], index=None)
     psy_aggro_ans = st.selectbox(t["psy_aggro"], options=t["psy_aggro_opt"], index=None)
 
-    submit_btn = st.form_submit_button(t["submit"], use_container_width=True)
+    # 提交按钮绑定静态 Key
+    submit_btn = st.form_submit_button(t["submit"], use_container_width=True, key="static_submit_btn")
 
 # ==========================================
-# 6. 后端纯 Index 算法计算 (免疫多语言 Bug)
+# 7. 后端算法解析与渲染 (完美兼容双语切换)
 # ==========================================
 if submit_btn:
     req = [child_gender, child_age, child_height, shoe_size_trait, mom_h, dad_h, 
@@ -320,7 +331,7 @@ if submit_btn:
     else:
         st.success(t["success"])
         
-        # 严格用数组的 Index 抓取分数，完美解决切语言 Bug
+        # 严格用数组的 Index 抓取分数，完美解决切语言带来的字符匹配问题
         shoe_idx = t["shoe_opt"].index(shoe_size_trait)
         acad_idx = t["acad_opt"].index(acad_level)
         budget_idx = t["budget_opt"].index(budget_level)
@@ -333,7 +344,7 @@ if submit_btn:
         psy_social = SCORE_MAP[t["psy_social_opt"].index(psy_social_ans)]
         psy_aggro = SCORE_MAP[t["psy_aggro_opt"].index(psy_aggro_ans)]
 
-        # 硬件推算
+        # 硬件推算公式
         is_male = "男" in child_gender or "Male" in child_gender
         target_height = (mom_h + dad_h + 13)/2 if is_male else (mom_h + dad_h - 13)/2
         active_mom_s = mom_h if span_unknown else mom_span
@@ -345,7 +356,7 @@ if submit_btn:
         st.info(f"**🦅 {t['ape_index']}：{genetic_ape_index:+.1f} cm**")
         st.info(f"**👣 {t['foot_trait']}：{shoe_size_trait}**")
 
-        # 算法匹配
+        # 数据归一化与相似度计算
         budget_score = 0.3 if budget_idx == 0 else (0.6 if budget_idx == 1 else 1.0)
         shoe_score = 0.2 if shoe_idx == 0 else (1.0 if shoe_idx == 2 else 0.6)
         
@@ -364,7 +375,7 @@ if submit_btn:
             st.markdown(f"### 🏆 Top {i+1}: {sorted_sports[i][0]}")
             st.markdown(f"**系统契合度：{sorted_sports[i][1]}%**")
         
-        # 个性化引擎
+        # 召唤超级个性化引擎
         st.success("✅ **AI 已为您生成深度执行蓝图：**" if st.session_state.lang == "中文" else "✅ **AI Deep Execution Blueprint:**")
         st.markdown(generate_personalized_plan(top_sport, child_age, weekly_hrs, budget_idx, acad_idx, st.session_state.lang))
         st.markdown(generate_athletic_enhancement(psy_flex, psy_aggro, psy_focus, psy_grit, st.session_state.lang))
