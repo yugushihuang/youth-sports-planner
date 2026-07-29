@@ -251,7 +251,7 @@ def generate_dynamic_reasoning(sport_name, sport_vec, user_vec, is_top, col_idx,
                 phrases = [
                     f"✔️ **底层神经的高度契合**：很多家长只看重身高，却忽视了心理门槛。孩子优异的【{dims[best_dim_idx]}】正是该项目教练最渴望的核心特质。",
                     f"✔️ **性格即命运**：这是为数不多对【{dims[best_dim_idx]}】要求极度苛刻的运动，而您孩子日常展现出的特质，将成为其最强的心理护城河。",
-                    f"✔️ **心智模型的天然拼图**：该项目的枯燥或高压会让普通孩子退缩，但系统捕捉到孩子极强的【{dims[best_dim_idx]}】，简直是为这项运动量身定制的。"
+                    f"✔️ **心智模型的天然拼图**：该项目的枯燥或高压会让普通孩子退缩，但系统捕捉到孩子极强的【{dims[best_dim_idx]}】, 简直是为这项运动量身定制的。"
                 ]
             reason_text += random.choice(phrases) + "\n"
             
@@ -296,13 +296,13 @@ def generate_dynamic_reasoning(sport_name, sport_vec, user_vec, is_top, col_idx,
         if lang == "中文":
             if is_physical:
                 worst_phrases = [
-                    f"❌ **逆水行舟的物理屏障**：由于该项目极其吃【{dims[worst_dim_idx]}】，强行练习在青春期后极易遇到无法跨越的物理天花板。",
-                    f"❌ **硬件基因不匹配**：练这项运动，如果没有出色的【{dims[worst_dim_idx]}】作为底座，再多的汗水也难以弥补天赋的鸿沟."
+                    f"❌ **逆水行舟的物理屏障**：由于该项目极其吃【{dims[worst_dim_idx]}】, 强行练习在青春期后极易遇到无法跨越的物理天花板。",
+                    f"❌ **硬件基因不匹配**：练这项运动，如果没有出色的【{dims[worst_dim_idx]}】作为底座，再多的汗水也难以弥补天赋的鸿沟。"
                 ]
             else:
                 worst_phrases = [
                     f"❌ **情绪内核相斥**：这项运动的训练环境对【{dims[worst_dim_idx]}】要求极度苛刻，这与孩子目前的舒适区背离，极易导致厌学。",
-                    f"❌ **神经类型的错位**：不推荐的根本原因在于【{dims[worst_dim_idx]}】的匮乏。强迫孩子去适应这种节奏，会带来不可逆的严重挫败感."
+                    f"❌ **神经类型的错位**：不推荐的根本原因在于【{dims[worst_dim_idx]}】的匮乏。强迫孩子去适应这种节奏，会带来不可逆的严重挫败感。"
                 ]
             reason_text += random.choice(worst_phrases) + "\n"
             
@@ -371,7 +371,7 @@ with st.form("main_form"):
         mom_span = st.number_input(t["mom_s"], min_value=140, max_value=190, value=None)
     with p_col2:
         dad_h = st.number_input(t["dad_h"], min_value=150, max_value=210, value=None)
-        dad_span = st.number_input(t["dad_span"] if "dad_span" in locals() else t["dad_h"], min_value=150, max_value=210, value=None) # Safe fallback
+        dad_span = st.number_input(t["dad_s"], min_value=150, max_value=210, value=None, key="dad_span_widget_fixed") # 修复重复ID Bug
     span_unknown = st.checkbox(t["unknown_span"])
 
     st.header(t["step1_5"])
@@ -445,17 +445,14 @@ if submit_btn:
             psy_flex/10.0, psy_aggro/10.0, psy_grit/10.0, psy_focus/10.0, psy_logic/10.0, psy_social/10.0, budget_score           
         ])
 
-        # 【特征反哺逻辑】：如果用户填了现役运动，提取其部分特征向量对用户画像进行微调（模拟后天训练带来的特质提升）
         current_sports_input = curr_sport_ans.strip() if curr_sport_ans else ""
         extracted_sport_names = []
         if current_sports_input and current_sports_input.lower() not in ["无", "none", "n/a", ""]:
             for sport_key, sport_vec_val in SPORTS_DB.items():
                 if any(kw.strip().lower() in sport_key.lower() for kw in current_sports_input.replace(",", " ").split() if kw.strip()):
                     extracted_sport_names.append(sport_key)
-                    # 后天训练反哺：将现役运动特征以 15% 的权重融入用户基础画像，体现训练带来的能力上浮
                     user_vec = user_vec * 0.85 + sport_vec_val * 0.15
 
-        # 算法 100% 保持绝对客观的匹配计算
         scores = {}
         for sport, data in SPORTS_DB.items():
             similarity = (np.dot(user_vec, data) / (np.linalg.norm(user_vec) * np.linalg.norm(data))) * 100
@@ -466,7 +463,6 @@ if submit_btn:
         sorted_sports = sorted(scores.items(), key=lambda x: x[1], reverse=True)
         top_sport = sorted_sports[0][0]
         
-        # ====== 现役运动独立审计与特征反哺报告 ======
         if extracted_sport_names:
             st.divider()
             st.header(t["res_audit_title"])
@@ -482,7 +478,6 @@ if submit_btn:
                 else:
                     st.error("❌ **审计结论：存在客观摩擦，但可作为跳板**。从纯客观数据模型的 10 维矩阵来看，该现役运动并非孩子天生最优解。不过，**既然已经在队里且能坚持，这本身就是对意志力和适应力的巨大锻炼**！您可以将其作为培养坚韧品质的载体，或在未来平稳过渡到匹配度更高的赛道。" if st.session_state.lang == "中文" else "❌ **Audit: Potential Mismatch, but Great Grit Builder**. Use it to build resilience.")
 
-        # ====== 渲染 Top 3 红榜 ======
         st.divider()
         st.header(t["res2_title"])
         for i in range(3):
@@ -492,7 +487,6 @@ if submit_btn:
             reason_str = generate_dynamic_reasoning(s_name, SPORTS_DB[s_name], user_vec, True, col_idx, st.session_state.lang)
             st.success(reason_str)
 
-        # ====== 渲染 Bottom 3 黑榜 (避坑指南) ======
         st.divider()
         st.header(t["res_worst_title"])
         st.markdown("⚠️ **教育不是盲目砸钱**：以下是系统算出的绝对黑名单，强烈建议避免在这三个项目上投入大量精力，因为沉没成本极高且极易导致孩子厌学。" if st.session_state.lang == "中文" else "⚠️ **Avoid these sports** to prevent high sunk costs and emotional burnout.")
@@ -508,7 +502,6 @@ if submit_btn:
         st.divider()
         st.markdown(generate_personalized_plan(top_sport, child_age, weekly_hrs, status_idx, curr_sport_ans, col_idx, acad_idx, st.session_state.lang))
 
-        # 防坑预警
         st.divider()
         st.header(t["res4_title"])
         if weekly_hrs > child_age + 3: st.error(t["burnout_high"])
