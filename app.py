@@ -17,7 +17,7 @@ SCORE_MAP = [2, 5, 8, 10]
 IVY_SPORTS = ["击剑 / Fencing", "赛艇 / Rowing-Crew", "高尔夫 / Golf", "网球 / Tennis", "马术 / Equestrian", "长曲棍球 / Lacrosse"]
 
 # ==========================================
-# 2. 多语言字典库 (新增红黑榜解析字典)
+# 2. 多语言字典库 (修复了遗漏的 KeyError 变量)
 # ==========================================
 UI = {
     "中文": {
@@ -81,6 +81,12 @@ UI = {
         "error_miss": "⚠️ 测评失败：您有漏选的必填项目！",
         "success": "✅ 计算完毕！专属深度诊断报告如下：",
         "res1_title": "🧬 诊断一：身体硬件与发育预估",
+        
+        # 补回遗漏的变量
+        "target_h": "预估成年身高 (Target Height)",
+        "ape_index": "预估臂展特征 (Ape Index)",
+        "foot_trait": "终端力学预判 (Foot Trait)",
+        
         "res2_title": "🎯 诊断二：AI 推荐【最高契合度】的三项运动 (红榜)",
         "res_worst_title": "⛔ 诊断三：AI 建议【避坑】的三项运动 (黑名单)",
         "res4_title": "⚠️ 诊断四：精力生态与防坑预警",
@@ -151,6 +157,12 @@ UI = {
         "error_miss": "⚠️ Error: Missing inputs!",
         "success": "✅ Data processed! Your report:",
         "res1_title": "🧬 Diagnosis 1: Physical Projections",
+        
+        # 补回遗漏的变量
+        "target_h": "Projected Target Height",
+        "ape_index": "Projected Ape Index (Wingspan)",
+        "foot_trait": "Terminal Biomechanics (Feet)",
+        
         "res2_title": "🎯 Diagnosis 2: Top 3 Highly Recommended Sports",
         "res_worst_title": "⛔ Diagnosis 3: Top 3 Sports to AVOID (Blacklist)",
         "res4_title": "⚠️ Diagnosis 4: Burnout & Time Warning",
@@ -202,41 +214,37 @@ def generate_dynamic_reasoning(sport_name, sport_vec, user_vec, is_top, col_idx,
     reason_text = ""
     
     if is_top:
-        # 寻找最匹配的优点 (sport_vec 高要求，且 user_vec 也高的维度)
         match_scores = sport_vec * user_vec
         best_dim_idx = np.argmax(match_scores)
         
         if lang == "中文":
             reason_text += f"✔️ **核心出成绩因素**：该项目极其依赖【{dims[best_dim_idx]}】，而您孩子在此项上拥有极高的先天优势，出成绩的概率远高于普通人。\n"
             
-            # ROI 与性价比逻辑
             if sport_vec[9] <= 0.5 and user_vec[9] < 0.8:
-                reason_text += f"✔️ **超高性价比 (ROI)**：系统检测到您的预算偏向理智型，而此项目（如田径、游泳等）主要依靠身体天赋和刻苦，**不需要砸重金跨州打比赛**，是中产家庭实现“低开高走”的最佳杠杆。\n"
+                reason_text += f"✔️ **超高性价比 (ROI)**：系统检测到您的预算偏向理智型。此项目主要依靠身体天赋和刻苦，**不需要砸重金跨州打比赛**，是中产家庭实现“低开高走”的最佳杠杆。\n"
             elif sport_vec[9] > 0.7 and user_vec[9] >= 0.8:
-                reason_text += f"✔️ **资金壁垒 (护城河)**：您填写的预算非常充足。此项目（如马术、高尔夫、冰球）极度烧钱，**您可以用资金直接帮孩子过滤掉 80% 的普通家庭竞争者**，在赛道里形成绝对的“降维打击”。\n"
+                reason_text += f"✔️ **资金壁垒 (护城河)**：您填写的预算非常充足。此项目极度烧钱，**您可以用资金直接帮孩子过滤掉 80% 的普通家庭竞争者**，在赛道里形成绝对的“降维打击”。\n"
             
-            # 名校契合度
             if col_idx == 2 and any(ivy_sport in sport_name for ivy_sport in IVY_SPORTS):
-                reason_text += f"✔️ **藤校专属密码**：您选择了冲刺常春藤/MIT。算法特意为您拉高了此项目的权重，因为它是典型的 **Ivy League 传统老钱运动**，在 D3 招生办支持系统中拥有极其可怕的绿灯通行权。\n"
+                reason_text += f"✔️ **藤校专属密码**：您选择了冲刺常春藤/MIT。算法为您拉高了此项目的权重，因为它是典型的 **Ivy League 传统老钱运动**，在 D3 招生办支持系统中拥有极其可怕的绿灯通行权。\n"
         else:
-            reason_text += f"✔️ **Core Strength**：This sport heavily relies on 【{dims[best_dim_idx]}】, matching your child's natural traits perfectly. Likelihood of success is extremely high.\n"
+            reason_text += f"✔️ **Core Strength**：This sport heavily relies on 【{dims[best_dim_idx]}】, matching your child's natural traits perfectly. Likelihood of success is high.\n"
             if sport_vec[9] <= 0.5 and user_vec[9] < 0.8:
                 reason_text += f"✔️ **High ROI**：Matches your rational budget. Relies on hard work rather than expensive travel teams.\n"
             elif col_idx == 2 and any(ivy_sport in sport_name for ivy_sport in IVY_SPORTS):
                 reason_text += f"✔️ **Ivy League Hack**：Since you target Ivy/MIT, this traditional sport offers massive leverage in D3 Admissions Support.\n"
 
     else:
-        # 寻找最大的天坑 (sport_vec 高要求，但 user_vec 极低的维度)
         deficits = sport_vec - user_vec
         worst_dim_idx = np.argmax(deficits)
         
         if lang == "中文":
-            reason_text += f"❌ **硬件/性格严重不符**：此项目对【{dims[worst_dim_idx]}】有着极高甚至严苛的要求。但系统提取您的输入后发现，孩子在此维度上极度欠缺。强行练这项运动不仅很难出成绩，还会让孩子陷入深度的自我怀疑。\n"
+            reason_text += f"❌ **硬件/性格严重不符**：此项目对【{dims[worst_dim_idx]}】有着极高的要求，但提取输入后发现孩子在此维度上极度欠缺。强行练这项运动不仅难出成绩，还会让孩子陷入深度的自我怀疑。\n"
             
             if sport_vec[9] > 0.7 and user_vec[9] < 0.5:
-                reason_text += f"❌ **资金破产预警**：您设定的预算有限，但这是一项无底洞级别的“烧钱运动”。即使孩子有天赋，到了后期也会因为无法支付昂贵的私教和全美巡回赛费用而被残酷淘汰。\n"
+                reason_text += f"❌ **资金破产预警**：您设定的预算有限，但这是一项无底洞级别的“烧钱运动”。即使孩子有天赋，后期也会因无法支付昂贵的私教和全美巡回赛费用而被残酷淘汰。\n"
         else:
-            reason_text += f"❌ **Mismatch Warning**：This sport demands extreme 【{dims[worst_dim_idx]}】, which is currently a critical deficit for your child. Pushing this will likely result in frustration.\n"
+            reason_text += f"❌ **Mismatch Warning**：This sport demands extreme 【{dims[worst_dim_idx]}】, which is currently a critical deficit for your child.\n"
             if sport_vec[9] > 0.7 and user_vec[9] < 0.5:
                 reason_text += f"❌ **Budget Alert**：Your budget does not match the heavy financial requirements of this elite sport.\n"
 
@@ -279,7 +287,6 @@ with st.expander(t["faq_title"], expanded=False): st.markdown(t["faq_content"])
 st.divider()
 
 with st.form("main_form"):
-    # 步骤 1：硬件
     st.header(t["step1"])
     st.caption(t["step1_cap"])
     col1, col2 = st.columns(2)
@@ -298,21 +305,18 @@ with st.form("main_form"):
         dad_span = st.number_input(t["dad_s"], min_value=150, max_value=210, value=None)
     span_unknown = st.checkbox(t["unknown_span"])
 
-    # 步骤 2：状态
     st.header(t["step1_5"])
     st.caption(t["step1_5_cap"])
     curr_status_ans = st.selectbox(t["curr_status"], options=t["curr_status_opt"], index=None)
     curr_sport_ans = st.text_input(t["curr_sport"], placeholder="例如: 游泳, 体操 / None")
     target_col_ans = st.selectbox(t["target_col"], options=t["target_col_opt"], index=None)
 
-    # 步骤 3：资源
     st.header(t["step2"])
     st.caption(t["step2_cap"])
     acad_level = st.selectbox(t["acad"], options=t["acad_opt"], index=None)
     weekly_hrs = st.selectbox(t["hours"], options=[2, 4, 6, 8, 10, 12, 15, 20, 25, 30], index=None)
     budget_level = st.selectbox(t["budget"], options=t["budget_opt"], index=None)
 
-    # 步骤 4：性格
     st.header(t["step3"])
     st.caption(t["step3_cap"])
     psy_focus_ans = st.selectbox(t["psy_focus"], options=t["psy_focus_opt"], index=None)
@@ -339,7 +343,6 @@ if submit_btn:
     else:
         st.success(t["success"])
         
-        # 数据转译
         shoe_idx = t["shoe_opt"].index(shoe_size_trait)
         acad_idx = t["acad_opt"].index(acad_level)
         budget_idx = t["budget_opt"].index(budget_level)
@@ -354,7 +357,6 @@ if submit_btn:
         psy_social = SCORE_MAP[t["psy_social_opt"].index(psy_social_ans)]
         psy_aggro = SCORE_MAP[t["psy_aggro_opt"].index(psy_aggro_ans)]
 
-        # 硬件推算
         is_male = "男" in child_gender or "Male" in child_gender
         target_height = (mom_h + dad_h + 13)/2 if is_male else (mom_h + dad_h - 13)/2
         active_mom_s = mom_h if span_unknown else mom_span
@@ -366,7 +368,6 @@ if submit_btn:
         st.info(f"**🦅 {t['ape_index']}：{genetic_ape_index:+.1f} cm**")
         st.info(f"**👣 {t['foot_trait']}：{shoe_size_trait}**")
 
-        # 归一化与相似度计算矩阵
         budget_score = 0.3 if budget_idx == 0 else (0.6 if budget_idx == 1 else 1.0)
         shoe_score = 0.2 if shoe_idx == 0 else (1.0 if shoe_idx == 2 else 0.6)
         
@@ -379,44 +380,36 @@ if submit_btn:
         for sport, data in SPORTS_DB.items():
             similarity = (np.dot(user_vec, data) / (np.linalg.norm(user_vec) * np.linalg.norm(data))) * 100
             if col_idx == 2 and any(ivy_sport in sport for ivy_sport in IVY_SPORTS):
-                similarity *= 1.15 # 藤校反向加权
+                similarity *= 1.15
             scores[sport] = round(similarity, 1)
             
         sorted_sports = sorted(scores.items(), key=lambda x: x[1], reverse=True)
         top_sport = sorted_sports[0][0]
         
-        # ====== 渲染 Top 3 红榜 ======
         st.divider()
         st.header("2️⃣ " + t["res2_title"])
         for i in range(3):
             s_name = sorted_sports[i][0]
             st.markdown(f"### 🏆 Top {i+1}: {s_name}")
             st.markdown(f"**系统综合匹配度：{sorted_sports[i][1]}%**")
-            
-            # 调用动态推理引擎解释 "为什么适合"
             reason_str = generate_dynamic_reasoning(s_name, SPORTS_DB[s_name], user_vec, True, col_idx, st.session_state.lang)
             st.success(reason_str)
 
-        # ====== 渲染 Bottom 3 黑榜 (避坑指南) ======
         st.divider()
         st.header("3️⃣ " + t["res_worst_title"])
-        st.markdown("⚠️ **教育不是盲目砸钱**：以下是系统算出的绝对黑名单，强烈建议避免在这三个项目上投入大量精力与金钱，因为沉没成本极高且极易导致孩子厌学。" if st.session_state.lang == "中文" else "⚠️ **Avoid these sports** to prevent high sunk costs and emotional burnout.")
+        st.markdown("⚠️ **教育不是盲目砸钱**：以下是系统算出的绝对黑名单，强烈建议避免在这三个项目上投入大量精力，因为沉没成本极高且极易导致孩子厌学。" if st.session_state.lang == "中文" else "⚠️ **Avoid these sports** to prevent high sunk costs and emotional burnout.")
         
-        worst_sports = sorted_sports[-3:][::-1] # 取最后三个并倒序，最差的排第一
+        worst_sports = sorted_sports[-3:][::-1]
         for i in range(3):
             w_name = worst_sports[i][0]
             st.markdown(f"### ⛔ 避坑 {i+1}: {w_name}")
             st.markdown(f"**系统综合匹配度：{worst_sports[i][1]}%**")
-            
-            # 调用动态推理引擎解释 "为什么天坑"
             reason_str = generate_dynamic_reasoning(w_name, SPORTS_DB[w_name], user_vec, False, col_idx, st.session_state.lang)
             st.error(reason_str)
         
-        # 个性化排期引擎
         st.divider()
         st.markdown(generate_personalized_plan(top_sport, child_age, weekly_hrs, status_idx, curr_sport_ans, col_idx, acad_idx, st.session_state.lang))
 
-        # 防坑预警
         st.divider()
         st.header("4️⃣ " + t["res4_title"])
         if weekly_hrs > child_age + 3: st.error(t["burnout_high"])
