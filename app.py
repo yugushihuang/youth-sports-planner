@@ -14,7 +14,7 @@ SCORE_MAP = [2, 5, 8, 10]
 IVY_SPORTS = ["击剑 / Fencing", "赛艇 / Rowing-Crew", "高尔夫 / Golf", "网球 / Tennis", "马术 / Equestrian", "长曲棍球 / Lacrosse"]
 
 # ==========================================
-# 2. 多语言字典库 
+# 2. 多语言字典库 (已100%还原满血版 NCAA 深度科普文案)
 # ==========================================
 UI = {
     "中文": {
@@ -23,10 +23,25 @@ UI = {
         "sidebar_title": "偏好设置",
         "faq_title": "👉 家长必看：什么是 NCAA？为什么科技圈都在卷体育爬藤？",
         "faq_content": """
-        **体育是通往美国顶尖大学的超级捷径**。NCAA 将大学体育分为三个级别，玩法完全不同：
-        🏆 **Division I (D1) - 全额奖学金**：竞技水平极高，适合极具天赋且能全职投入的家庭。
-        🥈 **Division II (D2) - 高性价比**：提供部分奖学金，但常春藤等顶尖学术名校不在这个级别。
-        🎓 **Division III (D3) - 常春藤名校的聚集地（核心重点！）**：包含哈佛、耶鲁、MIT等。**D3 不发体育奖学金！** 但教练有**“招生办支持权 (Admissions Support)”**。只要孩子特长被看中，且 GPA 达标，教练就能直接去招生办把你“特招”进去，挤掉那些满分 GPA 但毫无特色的普通学霸！
+        很多家长以为：“我又不想让娃做职业运动员，练这么苦有什么用？”
+        
+        其实，**体育是通往美国顶尖大学的超级捷径**。NCAA（全美大学体育协会）将大学体育分为了三个级别，玩法完全不同：
+        
+        🏆 **Division I (D1) - 顶级竞技场与全额奖学金**
+        * **特点**：竞技水平极高，竞争最惨烈。
+        * **回报**：大学会发放“全额体育奖学金 (Full Ride)”，相当于四年省下二三十万美金。
+        * **适合**：极具天赋，且家庭愿意投入大量时间金钱打全美巡回赛的选手。
+        
+        🥈 **Division II (D2) - 高性价比的平衡区**
+        * **特点**：竞技水平中上，提供部分奖学金 (Partial Scholarship)。
+        * **回报**：能拿到钱，且没 D1 那么内卷。但注意，常春藤等最顶尖的学术名校不在这个级别。
+        
+        🎓 **Division III (D3) - 常春藤名校的聚集地（核心重点！）**
+        * **特点**：包含哈佛、耶鲁等所有常春藤名校，以及 MIT、芝加哥大学等顶尖学府。
+        * **规则**：D3 绝对不发体育奖学金！
+        * **玩法**：教练手里掌握着极其宝贵的**“招生办支持权 (Admissions Support)”**。只要孩子有某项特长被教练看中，进入了教练的招募名单 (Recruit List)，并且高中的 GPA 达到了大学的基础门槛，教练就能直接去招生办要人。**你家孩子可以直接挤掉那些满分 GPA 但毫无特色、只能走常规申请 (Regular Decision) 的普通学霸！**
+        
+        **结论：体育练的不是肌肉，练的是顶尖名校最看重的：逆商、专注力与领导力。**
         """,
         "step1": "📝 第一步：身体硬件评估",
         "step1_cap": "填入真实的家庭数据，AI 将预估孩子的成年身高及发育特征。",
@@ -45,7 +60,7 @@ UI = {
         "step1_5_cap": "告诉系统孩子目前的进度和您的终极目标，以生成最精准的路径。",
         "curr_status": "孩子目前的运动状态是？",
         "curr_status_opt": ["毫无基础 / 还在摸索阶段", "上兴趣班 / 刚起步 (每周1-2次)", "已入队 / 规律训练 (有固定教练)", "高水平竞技 / 常拿名次 (准备冲击积分赛)"],
-        "curr_sport": "目前主攻或正在学的运动是？(若无填“无”，多项用空格隔开)",
+        "curr_sport": "目前主攻或正在学的运动是？(若无填“无”, 多项用空格隔开)",
         "target_col": "家庭对孩子未来的大学目标类型？",
         "target_col_opt": ["顺其自然 / 身体健康最重要", "综合类好大学 (Top 50 即可)", "冲刺顶级常春藤/MIT (极高学术要求)", "体育强校 (D1 全奖为核心目标)"],
 
@@ -96,10 +111,25 @@ UI = {
         "sidebar_title": "Preferences",
         "faq_title": "👉 Must Read: What is the NCAA? Why are Tech Parents Obsessed?",
         "faq_content": """
-        **Sports are the ultimate shortcut to elite US universities.**
-        🏆 **Division I (D1)**: Full Athletic Scholarships saving $200k+. For extreme talents.
-        🥈 **Division II (D2)**: Partial scholarships. Great ROI but lacks Ivy League schools.
-        🎓 **Division III (D3)**: Home to Harvard, Yale, MIT, etc. **D3 does NOT offer athletic money.** But Coaches hold **"Admissions Support"**. They can pull your child directly into the school, bypassing applicants with perfect GPAs but no sports!
+        Many parents think: "I don't want my kid to be a pro athlete, why train so hard?"
+
+        In reality, **sports are the ultimate shortcut to elite US universities.** The NCAA divides college sports into three divisions with very different rules:
+
+        🏆 **Division I (D1) - Elite Competition & Full Scholarships**
+        * **Level**: The highest and most ruthless level of competition.
+        * **Reward**: Coaches offer "Full Athletic Scholarships", saving $200k-$300k over four years.
+        * **Fit**: For extremely talented athletes whose families can invest heavily in travel teams.
+
+        🥈 **Division II (D2) - The Balanced Zone**
+        * **Level**: High-level competition.
+        * **Reward**: Offers Partial Scholarships. Great ROI, but top-tier academic schools (Ivy League) are not here.
+
+        🎓 **Division III (D3) - The Ivy League Hack (Crucial!)**
+        * **Level**: Home to the Ivy League (Harvard, Yale), MIT, UChicago, etc.
+        * **Rule**: D3 does NOT offer athletic scholarships.
+        * **The Hack**: Coaches hold a golden ticket called **"Admissions Support"**. If a coach wants your child on their team, and your child's GPA meets the academic baseline, the coach can pull them directly into the school. **Your child can bypass thousands of regular applicants who have perfect GPAs but no athletic edge!**
+
+        **Conclusion: We aren't training muscles; we are training Grit, Focus, and Leadership.**
         """,
         "step1": "📝 Step 1: Physical Hardware",
         "step1_cap": "Enter real family data to predict adult traits.",
@@ -167,7 +197,6 @@ UI = {
 
 # ==========================================
 # 3. 22项 NCAA 全系运动数据库
-# 维度: [0身高, 1臂展, 2水感/脚, 3柔韧, 4对抗爆发, 5逆商Grit, 6耐无聊, 7策略逻辑, 8社交团队, 9烧钱指数]
 # ==========================================
 SPORTS_DB = {
     "游泳 / Swimming (NCAA D1/D2/D3)": np.array([0.7, 0.9, 1.0, 0.4, 0.6, 0.5, 1.0, 0.2, 0.1, 0.4]),
@@ -210,7 +239,6 @@ def generate_dynamic_reasoning(sport_name, sport_vec, user_vec, is_top, col_idx,
         is_physical = best_dim_idx <= 3
         
         if lang == "中文":
-            # 物理与心理差异化话术池
             if is_physical:
                 phrases = [
                     f"✔️ **天然的物理外挂**：从力学角度看，孩子优秀的【{dims[best_dim_idx]}】与该项目的核心发力机制完美咬合，等于赢在了起跑线。",
@@ -225,7 +253,6 @@ def generate_dynamic_reasoning(sport_name, sport_vec, user_vec, is_top, col_idx,
                 ]
             reason_text += random.choice(phrases) + "\n"
             
-            # ROI 话术库
             if sport_vec[9] <= 0.5 and user_vec[9] < 0.8:
                 roi_phrases = [
                     f"✔️ **超高性价比 (ROI)**：系统检测到您的预算偏向理智型。该项目主要依靠汗水而非极其昂贵的装备，是中产家庭实现“低开高走”的最佳杠杆。",
@@ -239,11 +266,9 @@ def generate_dynamic_reasoning(sport_name, sport_vec, user_vec, is_top, col_idx,
                 ]
                 reason_text += random.choice(roi_phrases) + "\n"
             
-            # 藤校黑客
             if col_idx == 2 and any(ivy_sport in sport_name for ivy_sport in IVY_SPORTS):
                 reason_text += f"✔️ **藤校专属密码**：算法特意为您拉高了此项的权重，因为它是典型的 **Ivy League 传统老钱运动**，在 D3 招生办支持系统中拥有极其可怕的绿灯通行权。\n"
-        
-        else: # 英文版话术随机化
+        else:
             if is_physical:
                 phrases = [
                     f"✔️ **Biological Advantage**: Your child's 【{dims[best_dim_idx]}】 perfectly aligns with the biomechanics of this sport.",
@@ -261,7 +286,7 @@ def generate_dynamic_reasoning(sport_name, sport_vec, user_vec, is_top, col_idx,
             if col_idx == 2 and any(ivy_sport in sport_name for ivy_sport in IVY_SPORTS):
                 reason_text += f"✔️ **Ivy League Hack**：As a traditional sport, it offers massive leverage in D3 Admissions Support.\n"
 
-    else: # 黑榜逻辑
+    else:
         deficits = sport_vec - user_vec
         worst_dim_idx = np.argmax(deficits)
         is_physical = worst_dim_idx <= 3
