@@ -9,11 +9,11 @@ st.set_page_config(page_title="Sport & College Planner | 智能体教规划", la
 if 'lang' not in st.session_state:
     st.session_state.lang = "中文"
 
-# 心理测试分数映射表 (严格索引映射，根绝多语言 Bug)
+# 心理测试分数映射表 (严格索引映射)
 SCORE_MAP = [2, 5, 8, 10]
 
 # ==========================================
-# 2. 多语言字典与配置库 (i18n)
+# 2. 完整无缺的多语言字典与配置库 (i18n)
 # ==========================================
 UI = {
     "中文": {
@@ -31,11 +31,11 @@ UI = {
         * **回报**：大学会发放“全额体育奖学金 (Full Ride)”，相当于四年省下二三十万美金。适合极具天赋且能全职投入的家庭。
         
         🥈 **Division II (D2) - 高性价比的平衡区**
-        * **回报**：提供部分奖学金 (Partial Scholarship)，性价比高。但最顶尖的学术名校不在这个级别。
+        * **回报**：提供部分奖学金，性价比高。但注意，常春藤等最顶尖的学术名校不在这个级别。
         
         🎓 **Division III (D3) - 常春藤名校的聚集地（核心重点！）**
         * **特点**：包含哈佛、耶鲁等所有常春藤，以及 MIT、芝大等。**D3 绝对不发体育奖学金！**
-        * **核心玩法**：教练手里掌握着极其宝贵的**“招生办支持权 (Admissions Support)”**。只要孩子有特长被教练看中，且高中的 GPA 达到基础门槛，教练就能直接去招生办要人。**你家孩子可以直接挤掉那些满分 GPA 但毫无特色的普通学霸！**
+        * **核心玩法**：教练手里掌握着极其宝贵的**“招生办支持权 (Admissions Support)”**。只要孩子有特长被教练看中，且高中的 GPA 达到基础门槛，教练就能直接去招生办要人。**可以直接挤掉那些满分 GPA 但毫无特色、只能走常规申请的普通学霸！**
         """,
         "step1": "📝 第一步：身体硬件评估",
         "step1_cap": "填入真实的家庭数据，AI 将预估孩子的成年身高及发育特征。",
@@ -78,7 +78,18 @@ UI = {
         
         "submit": "🚀 启动 AI 定制引擎",
         "error_miss": "⚠️ 测评失败：您有漏选的题目！请将所有选项填写完整。",
-        "success": "✅ 计算完毕！专属深度诊断报告如下："
+        "success": "✅ 计算完毕！专属深度诊断报告如下：",
+        "res1_title": "🧬 诊断一：身体硬件与发育预估",
+        "target_h": "预估成年身高 (Target Height)",
+        "ape_index": "预估臂展特征 (Ape Index)",
+        "foot_trait": "终端力学预判 (Foot Trait)",
+        "res2_title": "🎯 诊断二：AI 智能匹配最高的三项运动",
+        "res3_title": "⚠️ 诊断三：时间破产与防坑预警",
+        "burnout_high": "🚨 红色警报：孩子极易受伤和厌学！每周训练不应超过自身年龄。",
+        "burnout_low": "🟡 提示：训练强度偏佛系，健康但缺乏竞技壁垒。",
+        "burnout_ok": "✅ 极佳的精力状态！完美兼顾身体与课业。",
+        "cta_title": "📥 获取独家排期表，不做瞎焦虑的家长",
+        "cta_desc": "**👇 添加主理人微信，获取属于你的定制方案 👇**\n### 💬 微信号：`BigMeiXiao`\n*备注【AI测评截图】，免费获取针对大西雅图/Bellevue学区的《体教统筹排期表》。*"
     },
     "English": {
         "title": "Which Sport is Best for Your Child?",
@@ -97,7 +108,7 @@ UI = {
         
         🎓 **Division III (D3) - The Ivy League Hack (Crucial!)**
         * Home to Harvard, Yale, MIT, etc. D3 does NOT offer athletic money.
-        * **The Hack**: Coaches hold **"Admissions Support"**. If a coach wants your child, they can pull them directly into the school, bypassing thousands of applicants with perfect GPAs but no sports!
+        * **The Hack**: Coaches hold **"Admissions Support"**. If a coach wants your child, they can pull them directly into the school, bypassing applicants with perfect GPAs but no sports!
         """,
         "step1": "📝 Step 1: Physical Hardware",
         "step1_cap": "Enter real family data to predict adult traits.",
@@ -139,23 +150,59 @@ UI = {
         
         "submit": "🚀 Launch AI Matching Engine",
         "error_miss": "⚠️ Error: Missing inputs!",
-        "success": "✅ Data processed! Your report:"
+        "success": "✅ Data processed! Your report:",
+        "res1_title": "🧬 Diagnosis 1: Physical Projections",
+        "target_h": "Projected Target Height",
+        "ape_index": "Projected Ape Index (Wingspan)",
+        "foot_trait": "Terminal Biomechanics (Feet)",
+        "res2_title": "🎯 Diagnosis 2: Top Recommended Sports",
+        "res3_title": "⚠️ Diagnosis 3: Burnout & Time Warning",
+        "burnout_high": "🚨 RED ALERT: High risk of injury and burnout! Weekly hours should not exceed age.",
+        "burnout_low": "🟡 Note: Relaxed pace. Healthy, but lacks competitive edge for recruiting.",
+        "burnout_ok": "✅ Excellent energy balance! Perfect harmony of physical and academic load.",
+        "cta_title": "📥 Get Your Exclusive Schedule & Stop Stressing",
+        "cta_desc": "**👇 Add the Founder on WeChat for a Custom Plan 👇**\n### 💬 WeChat ID: `BigMeiXiao`\n*Mention [AI Report] for a free schedule audit.*"
     }
 }
 
-# 运动底层库
+# ==========================================
+# 3. 超大型 NCAA 全系运动数据库 (22项)
+# 向量维度: [身高红利, 臂展红利, 水感/脚码, 柔韧控制, 爆发力, 抗挫折力, 耐无聊度, 策略烧脑, 团队协作, 烧钱指数]
+# ==========================================
 SPORTS_DB = {
-    "游泳 / Swimming": np.array([0.7, 0.9, 1.0, 0.4, 0.6, 0.5, 1.0, 0.2, 0.1, 0.4]),
-    "跳水 / Diving": np.array([0.2, 0.3, 0.9, 1.0, 0.9, 0.8, 0.8, 0.4, 0.1, 0.5]),
-    "体操 / Gymnastics": np.array([0.1, 0.2, 0.1, 1.0, 0.9, 0.9, 0.9, 0.3, 0.2, 0.6]),
-    "击剑 / Fencing": np.array([0.6, 0.9, 0.1, 0.6, 0.8, 0.7, 0.6, 1.0, 0.2, 0.8]),
-    "高尔夫 / Golf": np.array([0.4, 0.5, 0.1, 0.6, 0.3, 1.0, 0.9, 0.9, 0.2, 1.0]),
-    "网球 / Tennis": np.array([0.7, 0.8, 0.1, 0.5, 0.8, 0.9, 0.7, 0.8, 0.1, 0.9]),
-    "水球 / Water Polo": np.array([0.8, 0.9, 0.8, 0.5, 0.8, 0.7, 0.4, 0.8, 0.9, 0.5])
+    # --- 水上运动 (Aquatics) ---
+    "游泳 / Swimming (NCAA D1/D2/D3)": np.array([0.7, 0.9, 1.0, 0.4, 0.6, 0.5, 1.0, 0.2, 0.1, 0.4]),
+    "跳水 / Diving (NCAA D1/D2/D3)": np.array([0.2, 0.3, 0.9, 1.0, 0.9, 0.8, 0.8, 0.4, 0.1, 0.5]),
+    "水球 / Water Polo (NCAA D1/D2/D3)": np.array([0.8, 0.9, 0.8, 0.5, 0.8, 0.7, 0.4, 0.8, 0.9, 0.5]),
+    "赛艇 / Rowing-Crew (NCAA D1/D2/D3)": np.array([0.9, 0.9, 0.1, 0.3, 0.7, 0.8, 0.9, 0.2, 1.0, 0.7]),
+    
+    # --- 技巧与精准 (Skill & Precision) ---
+    "体操 / Gymnastics (NCAA D1/D2/D3)": np.array([0.1, 0.2, 0.1, 1.0, 0.9, 0.9, 0.9, 0.3, 0.2, 0.6]),
+    "击剑 / Fencing (NCAA D1/D2/D3)": np.array([0.6, 0.9, 0.1, 0.6, 0.8, 0.7, 0.6, 1.0, 0.2, 0.8]),
+    "高尔夫 / Golf (NCAA D1/D2/D3)": np.array([0.4, 0.5, 0.1, 0.6, 0.3, 1.0, 0.9, 0.9, 0.2, 1.0]),
+    "步枪 / Rifle (NCAA Mixed)": np.array([0.3, 0.3, 0.1, 0.4, 0.1, 1.0, 1.0, 0.5, 0.1, 0.6]),
+    "保龄球 / Bowling (NCAA Women)": np.array([0.4, 0.4, 0.1, 0.4, 0.2, 0.8, 0.9, 0.5, 0.3, 0.4]),
+    "马术 / Equestrian (NCAA Emerging)": np.array([0.5, 0.5, 0.1, 0.6, 0.4, 0.7, 0.6, 0.5, 0.2, 1.0]),
+    
+    # --- 场地与球类 (Court & Field) ---
+    "网球 / Tennis (NCAA D1/D2/D3)": np.array([0.7, 0.8, 0.1, 0.5, 0.8, 0.9, 0.7, 0.8, 0.1, 0.9]),
+    "篮球 / Basketball (NCAA D1/D2/D3)": np.array([1.0, 1.0, 0.1, 0.4, 0.9, 0.6, 0.4, 0.8, 0.9, 0.4]),
+    "排球 / Volleyball (NCAA D1/D2/D3)": np.array([1.0, 0.9, 0.1, 0.4, 0.9, 0.6, 0.4, 0.7, 1.0, 0.4]),
+    "足球 / Soccer (NCAA D1/D2/D3)": np.array([0.5, 0.4, 0.1, 0.5, 0.8, 0.7, 0.5, 0.8, 1.0, 0.4]),
+    "长曲棍球 / Lacrosse (NCAA D1/D2/D3)": np.array([0.6, 0.7, 0.1, 0.4, 0.8, 0.7, 0.4, 0.8, 0.9, 0.7]),
+    "曲棍球 / Field Hockey (NCAA D1/D2/D3)": np.array([0.5, 0.5, 0.1, 0.6, 0.8, 0.7, 0.5, 0.8, 0.9, 0.6]),
+    "棒球_垒球 / Baseball & Softball (NCAA D1/D2/D3)": np.array([0.6, 0.7, 0.1, 0.6, 0.7, 0.7, 0.7, 0.9, 0.8, 0.6]),
+    "冰球 / Ice Hockey (NCAA D1/D2/D3)": np.array([0.6, 0.6, 0.1, 0.5, 1.0, 0.8, 0.6, 0.8, 0.9, 0.9]),
+    
+    # --- 速度与力量 (Speed & Power) ---
+    "田径-短跑跳跃 / Track & Field - Sprints (NCAA D1/D2/D3)": np.array([0.8, 0.6, 0.1, 0.6, 1.0, 0.7, 0.7, 0.2, 0.1, 0.2]),
+    "越野长跑 / Cross Country (NCAA D1/D2/D3)": np.array([0.4, 0.4, 0.1, 0.3, 0.3, 0.9, 1.0, 0.4, 0.6, 0.2]),
+    "摔跤 / Wrestling (NCAA D1/D2/D3)": np.array([0.2, 0.4, 0.1, 0.8, 0.9, 0.9, 0.5, 0.6, 0.1, 0.2]),
+    "滑雪 / Skiing (NCAA Mixed)": np.array([0.5, 0.5, 0.1, 0.8, 0.8, 0.9, 0.8, 0.6, 0.2, 0.9])
 }
 
 # ==========================================
-# 3. 动态个性化计划生成引擎 (AI Engine)
+# 4. 动态个性化计划生成引擎 (AI Engine)
 # ==========================================
 def generate_personalized_plan(sport, age, hours, budget_idx, acad_idx, lang):
     phase_cn = "探索采样期 (Sampling Phase)" if age <= 10 else "专项突破期 (Specialization Phase)"
@@ -168,45 +215,45 @@ def generate_personalized_plan(sport, age, hours, budget_idx, acad_idx, lang):
     
     if lang == "中文":
         md = f"#### 📅 针对 {age} 岁孩子的【{sport}】深度定制计划\n"
-        md += f"**📍 当前阶段定位**：{phase_cn}。这个年龄段切忌过度追求名次，核心是打磨神经肌肉记忆和保持兴趣。\n\n"
+        md += f"**📍 当前阶段定位**：{phase_cn}。这个年龄段切忌过度追求单一项目的成绩，核心是打磨神经肌肉记忆和保持兴趣，为青春期后的爆发蓄力。\n\n"
         md += f"**⏱️ 精力分配矩阵 ({hours}小时/周)**：\n"
-        md += f"- 🏅 **专项技术 ({s_hrs}h)**：主攻 {sport} 俱乐部核心课程。\n"
-        md += f"- 🏋️ **跨项体能 ({c_hrs}h)**：千万别只练单项！必须用这部分时间练核心力量（如基础体操或田径），防止单侧肌肉劳损。\n"
-        md += f"- 🧘 **强制恢复 ({r_hrs}h)**：留白时间，用于拉伸、冥想睡眠，消化身体压力。\n\n"
+        md += f"- 🏅 **专项技术 ({s_hrs}h)**：主攻 {sport} 的核心技术动作。\n"
+        md += f"- 🏋️ **跨项体能 ({c_hrs}h)**：千万别只练单项！必须用这部分时间练核心力量（如基础体操、跑跳），防止单侧肌肉过度劳损。\n"
+        md += f"- 🧘 **强制恢复 ({r_hrs}h)**：留白时间，用于肌肉拉伸、按摩与睡眠，消化身体压力。\n\n"
         
         md += f"**💰 资金与路径策略**："
         if budget_idx == 2:
-            md += "系统检测到预算极其充足。建议跳过大锅饭课，直接寻找有 NCAA D1 背景的退役教练 1v1 私教，并提前注册全国协会账号准备跨州积分赛。\n\n"
+            md += "系统检测到预算极其充足。建议跳过大锅饭式的训练，直接寻找有 NCAA D1 背景的退役教练进行 1v1 私教，并提前注册全国协会账号准备跨州积分赛。\n\n"
         else:
-            md += "性价比最高的路线：加入本地高水平 Club 的 A 梯队，利用大班对抗氛围提升竞技状态，将资金留到 12 岁以后爆发使用。\n\n"
+            md += "性价比最高的路线：加入本地高水平 Club 的第一梯队，利用大班高强度的对抗氛围提升竞技状态，将大额资金留到 12 岁以后的关键招募期使用。\n\n"
             
         if acad_idx >= 2:
-            md += f"**📚 学霸双轨护城河**：您对学业要求极高（竞赛级）。**防坑警告**：千万不要在周一到周四晚上安排高强度无氧训练！把耗体力的训练堆在周末，平时晚上必须留给数学逻辑拓展，GPA 才是爬藤的最后底牌。"
+            md += f"**📚 学霸双轨护城河**：您对学业要求极高（竞赛级/超前）。**防坑警告**：千万不要在周一到周四晚上安排极度消耗体力的无氧训练！把耗体力的训练堆在周末，平时晚上必须留给数学与阅读拓展。**在 NCAA 招募中，高 GPA 是教练帮你去招生办要人的最后底牌。**"
     else:
         md = f"#### 📅 {age}-Year-Old {sport} Custom Blueprint\n"
-        md += f"**📍 Phase**：{phase_en}. Focus on neuromuscular memory, not winning medals right now.\n"
-        md += f"**⏱️ Time Allocation ({hours}h/wk)**: {s_hrs}h on-sport tech, {c_hrs}h cross-training (core/gymnastics), {r_hrs}h mandatory recovery/stretching.\n"
+        md += f"**📍 Phase**：{phase_en}. Focus on neuromuscular memory and passion, not just winning medals right now.\n"
+        md += f"**⏱️ Time Allocation ({hours}h/wk)**: {s_hrs}h on-sport tech, {c_hrs}h cross-training (core/gymnastics to prevent overuse injuries), {r_hrs}h mandatory recovery/stretching.\n"
         if budget_idx == 2: md += "**💰 Strategy**: Budget allows for 1v1 ex-NCAA coaches. Start collecting national points.\n"
-        else: md += "**💰 Strategy**: Join a highly competitive local club A-team. Save heavy spending for post-12 years old.\n"
-        if acad_idx >= 2: md += "**📚 Academic Buffer**: Do NOT schedule heavy physical workouts on weeknights. Save weeknights for math/GPA prep."
+        else: md += "**💰 Strategy**: Join a highly competitive local club A-team. Save heavy spending for post-12 years old recruiting windows.\n"
+        if acad_idx >= 2: md += "**📚 Academic Buffer**: Do NOT schedule heavy physical workouts on weeknights. Save weeknights for math/GPA prep. A high GPA is the ultimate leverage in NCAA recruiting."
     return md
 
 def generate_athletic_enhancement(flex, aggro, focus, grit, lang):
-    md = "#### 🔧 弱项补偿与底层运动能力提升建议\n" if lang == "中文" else "#### 🔧 Core Athletic Enhancement Plan\n"
+    md = "#### 🔧 弱项补偿与底层能力提升指南\n" if lang == "中文" else "#### 🔧 Core Athletic Enhancement Plan\n"
     if lang == "中文":
-        if flex <= 5: md += "- 🤸 **柔韧性赤字**：每天睡前必须增加 15 分钟静态拉伸。柔韧性不足会极大增加未来韧带撕裂的风险。\n"
-        if aggro <= 5: md += "- 🛡️ **对抗自信心构建**：孩子比较抗拒肢体冲突。建议在家进行轻度的“抢枕头/摔跤”游戏，帮大脑脱敏。\n"
-        if focus <= 5: md += "- ⏱️ **注意力切片**：孩子难以长时间忍受枯燥。把训练时间切碎，采用“15分钟专注+3分钟游戏”的番茄工作法。\n"
-        if grit <= 5: md += "- 🧠 **逆商 (Grit) 训练**：输了容易崩溃。在日常生活中刻意创造“能赢，但必须非常努力才能赢”的微小挫折场景，强化多巴胺回路。\n"
+        if flex <= 5: md += "- 🤸 **柔韧性赤字补偿**：系统检测到孩子身体略显僵硬。每天睡前必须增加 15 分钟静态拉伸（如坐姿体前屈）。柔韧性不足会极大增加未来韧带撕裂的风险。\n"
+        if aggro <= 5: md += "- 🛡️ **对抗脱敏训练**：孩子目前比较抗拒肢体冲突。建议在家进行轻度的“抢枕头、拔河”等游戏，帮助大脑对物理接触产生安全脱敏。\n"
+        if focus <= 5: md += "- ⏱️ **注意力切片法**：孩子难以长时间忍受枯燥。不要强制练一小时，采用“15分钟极度专注+3分钟游戏奖励”的番茄工作法，逐步拉长耐受区间。\n"
+        if grit <= 5: md += "- 🧠 **逆商 (Grit) 刻意练习**：输了容易崩溃或放弃。在日常生活中刻意创造“稍微踮起脚尖才能赢”的微小挫折场景。当孩子在逆境中反败为胜时，狠狠表扬其**过程中的坚持**，而不是结果。\n"
     else:
         if flex <= 5: md += "- 🤸 **Flexibility Deficit**: Add 15m daily static stretching to prevent future ligament tears.\n"
-        if aggro <= 5: md += "- 🛡️ **Contact Confidence**: Play light wrestling games at home to desensitize the brain to physical contact.\n"
-        if focus <= 5: md += "- ⏱️ **Focus Slicing**: Break trainings into 15-min intervals with gamified rewards.\n"
-        if grit <= 5: md += "- 🧠 **Grit Training**: Create micro-challenges where they must struggle to win, building resilience.\n"
+        if aggro <= 5: md += "- 🛡️ **Contact Confidence**: Play light wrestling/tug-of-war games at home to desensitize the brain to physical contact.\n"
+        if focus <= 5: md += "- ⏱️ **Focus Slicing**: Break trainings into 15-min intensive intervals with gamified rewards.\n"
+        if grit <= 5: md += "- 🧠 **Grit Training**: Create micro-challenges where they must struggle to win. Praise the *effort*, not just the result, to build resilience.\n"
     return md
 
 # ==========================================
-# 4. 侧边栏与表单渲染
+# 5. 前端 UI 渲染
 # ==========================================
 st.sidebar.markdown(f"### {UI[st.session_state.lang]['sidebar_title']}")
 selected_lang = st.sidebar.radio(UI[st.session_state.lang]['lang_switch'], ["中文", "English"])
@@ -244,7 +291,7 @@ with st.form("main_form"):
     st.header(t["step2"])
     st.caption(t["step2_cap"])
     acad_level = st.selectbox(t["acad"], options=t["acad_opt"], index=None)
-    weekly_hrs = st.selectbox(t["hours"], options=[2, 4, 6, 8, 10, 12, 15, 20, 25], index=None)
+    weekly_hrs = st.selectbox(t["hours"], options=[2, 4, 6, 8, 10, 12, 15, 20, 25, 30], index=None)
     budget_level = st.selectbox(t["budget"], options=t["budget_opt"], index=None)
 
     st.header(t["step3"])
@@ -260,7 +307,7 @@ with st.form("main_form"):
     submit_btn = st.form_submit_button(t["submit"], use_container_width=True)
 
 # ==========================================
-# 5. 后端纯 Index 算法计算 (免疫多语言 Bug)
+# 6. 后端纯 Index 算法计算 (免疫多语言 Bug)
 # ==========================================
 if submit_btn:
     req = [child_gender, child_age, child_height, shoe_size_trait, mom_h, dad_h, 
@@ -314,10 +361,11 @@ if submit_btn:
         st.divider()
         st.header("2️⃣ " + t["res2_title"])
         for i in range(3):
-            st.markdown(f"### 🏆 Top {i+1}: {sorted_sports[i][0]} (Match: {sorted_sports[i][1]}%)")
+            st.markdown(f"### 🏆 Top {i+1}: {sorted_sports[i][0]}")
+            st.markdown(f"**系统契合度：{sorted_sports[i][1]}%**")
         
-        # 调用大招：个性化计划与弱项补偿引擎
-        st.success("✅ **AI 已为您生成深度执行蓝图：**")
+        # 个性化引擎
+        st.success("✅ **AI 已为您生成深度执行蓝图：**" if st.session_state.lang == "中文" else "✅ **AI Deep Execution Blueprint:**")
         st.markdown(generate_personalized_plan(top_sport, child_age, weekly_hrs, budget_idx, acad_idx, st.session_state.lang))
         st.markdown(generate_athletic_enhancement(psy_flex, psy_aggro, psy_focus, psy_grit, st.session_state.lang))
 
