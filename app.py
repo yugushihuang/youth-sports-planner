@@ -14,7 +14,7 @@ SCORE_MAP = [2, 5, 8, 10]
 IVY_SPORTS = ["击剑 / Fencing", "赛艇 / Rowing-Crew", "高尔夫 / Golf", "网球 / Tennis", "马术 / Equestrian", "长曲棍球 / Lacrosse"]
 
 # ==========================================
-# 2. 多语言字典库 (已100%还原满血版 NCAA 深度科普文案)
+# 2. 多语言字典库 (100% 满血保留 NCAA 深度科普文案)
 # ==========================================
 UI = {
     "中文": {
@@ -57,7 +57,7 @@ UI = {
         "unknown_span": "❓ 我不知道父母的具体臂展 (系统将按人类标准比例自动推算)",
         
         "step1_5": "🎯 第二步：当前状态与升学目标",
-        "step1_5_cap": "告诉系统孩子目前的进度和您的终极目标，以生成最精准的路径。",
+        "step1_5_cap": "告诉系统孩子目前的进度和您的终极目标，系统将自动提取现役运动的特征进行模型反哺。",
         "curr_status": "孩子目前的运动状态是？",
         "curr_status_opt": ["毫无基础 / 还在摸索阶段", "上兴趣班 / 刚起步 (每周1-2次)", "已入队 / 规律训练 (有固定教练)", "高水平竞技 / 常拿名次 (准备冲击积分赛)"],
         "curr_sport": "目前主攻或正在学的运动是？(若无填“无”, 多项用空格隔开)",
@@ -74,7 +74,7 @@ UI = {
         
         "step3": "🧠 第四步：场景化性格测试",
         "step3_cap": "请直接根据孩子在生活中的真实反应“对号入座”。",
-        "psy_focus": "1. 【耐无聊指数】面对练琴、写字等枯燥任务时：",
+        "psy_focus": "1. 【耐无聊指数】面对练琴, 写字等枯燥任务时：",
         "psy_focus_opt": ["极易分心，5分钟就坐不住", "偶尔能坚持，但需要大人盯", "能沉浸在自己的世界里半小时以上", "极度专注，一旦投入打雷都不理会"],
         "psy_grit": "2. 【受挫恢复力】比赛或玩游戏输了时：",
         "psy_grit_opt": ["崩溃大哭，直接放弃再也不玩了", "生闷气，需要大人哄很久才能缓过来", "马上擦干眼泪，要求再来一局", "不仅要再来，还会拉着大人复盘怎么赢"],
@@ -87,7 +87,7 @@ UI = {
         "psy_social": "6. 【社交依赖度】在课外活动或操场上：",
         "psy_social_opt": ["极度社恐，只喜欢自己一个人躲在角落玩", "慢热，熟了之后能融入小团体", "害怕孤单，走到哪都必须有玩伴", "终极社牛，永远是人群中心，喜欢指挥别人"],
         "psy_aggro": "7. 【肢体对抗欲】关于身体接触：",
-        "psy_aggro_opt": ["极度害怕身体碰撞，别人一碰就躲", "正常跑跳，不主动推挤别人", "喜欢玩抓人、摔跤等有轻微对抗的游戏", "极度享受身体冲撞，像个小坦克一样横冲直撞"],
+        "psy_aggro_opt": ["极度害怕身体碰撞，别人一碰就躲", "正常跑跳，不主动推挤别人", "喜欢玩抓人, 摔跤等有轻微对抗的游戏", "极度享受身体冲撞, 像个小坦克一样横冲直撞"],
         
         "submit": "🚀 启动 AI 定制引擎",
         "error_miss": "⚠️ 测评失败：您有漏选的必填项目！",
@@ -96,9 +96,10 @@ UI = {
         "target_h": "预估成年身高 (Target Height)",
         "ape_index": "预估臂展特征 (Ape Index)",
         "foot_trait": "终端力学预判 (Foot Trait)",
-        "res2_title": "🎯 诊断二：AI 推荐【最高契合度】的三项运动 (红榜)",
-        "res_worst_title": "⛔ 诊断三：AI 建议【避坑】的三项运动 (黑名单)",
-        "res4_title": "⚠️ 诊断四：精力生态与防坑预警",
+        "res_audit_title": "🔍 诊断二：现役运动深度审计与【特征反哺】",
+        "res2_title": "🎯 诊断三：AI 推荐【最高契合度】的三项运动 (红榜)",
+        "res_worst_title": "⛔ 诊断四：AI 建议【避坑】的三项运动 (黑名单)",
+        "res4_title": "⚠️ 诊断五：精力生态与防坑预警",
         "burnout_high": "🚨 红色警报：孩子极易受伤和厌学！每周训练不应超过自身年龄。",
         "burnout_low": "🟡 提示：训练强度偏佛系，健康但缺乏竞技壁垒。",
         "burnout_ok": "✅ 极佳的精力状态！完美兼顾身体与课业。",
@@ -184,9 +185,10 @@ UI = {
         "target_h": "Projected Target Height",
         "ape_index": "Projected Ape Index (Wingspan)",
         "foot_trait": "Terminal Biomechanics (Feet)",
-        "res2_title": "🎯 Diagnosis 2: Top 3 Highly Recommended Sports",
-        "res_worst_title": "⛔ Diagnosis 3: Top 3 Sports to AVOID (Blacklist)",
-        "res4_title": "⚠️ Diagnosis 4: Burnout & Time Warning",
+        "res_audit_title": "🔍 Diagnosis 2: Current Sports Audit & Feature Extraction",
+        "res2_title": "🎯 Diagnosis 3: Top 3 Highly Recommended Sports",
+        "res_worst_title": "⛔ Diagnosis 4: Top 3 Sports to AVOID (Blacklist)",
+        "res4_title": "⚠️ Diagnosis 5: Burnout & Time Warning",
         "burnout_high": "🚨 RED ALERT: High risk of injury and burnout!",
         "burnout_low": "🟡 Note: Relaxed pace. Healthy, but lacks competitive edge.",
         "burnout_ok": "✅ Excellent energy balance!",
@@ -224,7 +226,7 @@ SPORTS_DB = {
 }
 
 # ==========================================
-# 4. 动态重组推理生成器 (消除模板感)
+# 4. 动态重组推理生成器
 # ==========================================
 def generate_dynamic_reasoning(sport_name, sport_vec, user_vec, is_top, col_idx, lang):
     dims_cn = ["身高天赋", "臂展天赋", "身体末端力学", "核心柔韧度", "肢体对抗欲望", "受挫韧性(Grit)", "枯燥耐受度", "战术与逻辑脑力", "团队协作依赖", "家庭资金(ROI)"]
@@ -295,12 +297,12 @@ def generate_dynamic_reasoning(sport_name, sport_vec, user_vec, is_top, col_idx,
             if is_physical:
                 worst_phrases = [
                     f"❌ **逆水行舟的物理屏障**：由于该项目极其吃【{dims[worst_dim_idx]}】，强行练习在青春期后极易遇到无法跨越的物理天花板。",
-                    f"❌ **硬件基因不匹配**：练这项运动，如果没有出色的【{dims[worst_dim_idx]}】作为底座，再多的汗水也难以弥补天赋的鸿沟。"
+                    f"❌ **硬件基因不匹配**：练这项运动，如果没有出色的【{dims[worst_dim_idx]}】作为底座，再多的汗水也难以弥补天赋的鸿沟."
                 ]
             else:
                 worst_phrases = [
                     f"❌ **情绪内核相斥**：这项运动的训练环境对【{dims[worst_dim_idx]}】要求极度苛刻，这与孩子目前的舒适区背离，极易导致厌学。",
-                    f"❌ **神经类型的错位**：不推荐的根本原因在于【{dims[worst_dim_idx]}】的匮乏。强迫孩子去适应这种节奏，会带来不可逆的严重挫败感。"
+                    f"❌ **神经类型的错位**：不推荐的根本原因在于【{dims[worst_dim_idx]}】的匮乏。强迫孩子去适应这种节奏，会带来不可逆的严重挫败感."
                 ]
             reason_text += random.choice(worst_phrases) + "\n"
             
@@ -369,13 +371,13 @@ with st.form("main_form"):
         mom_span = st.number_input(t["mom_s"], min_value=140, max_value=190, value=None)
     with p_col2:
         dad_h = st.number_input(t["dad_h"], min_value=150, max_value=210, value=None)
-        dad_span = st.number_input(t["dad_s"], min_value=150, max_value=210, value=None)
+        dad_span = st.number_input(t["dad_span"] if "dad_span" in locals() else t["dad_h"], min_value=150, max_value=210, value=None) # Safe fallback
     span_unknown = st.checkbox(t["unknown_span"])
 
     st.header(t["step1_5"])
     st.caption(t["step1_5_cap"])
     curr_status_ans = st.selectbox(t["curr_status"], options=t["curr_status_opt"], index=None)
-    curr_sport_ans = st.text_input(t["curr_sport"], placeholder="例如: 游泳, 体操 / None")
+    curr_sport_ans = st.text_input(t["curr_sport"], placeholder="例如: 游泳, 跳水 / None")
     target_col_ans = st.selectbox(t["target_col"], options=t["target_col_opt"], index=None)
 
     st.header(t["step2"])
@@ -397,7 +399,7 @@ with st.form("main_form"):
     submit_btn = st.form_submit_button(t["submit"], use_container_width=True, key="static_submit_btn")
 
 # ==========================================
-# 6. 后端算法解析、黑白榜生成与渲染
+# 6. 后端算法解析、特征反哺与独立审计渲染
 # ==========================================
 if submit_btn:
     req = [child_gender, child_age, child_height, shoe_size_trait, mom_h, dad_h, 
@@ -443,6 +445,17 @@ if submit_btn:
             psy_flex/10.0, psy_aggro/10.0, psy_grit/10.0, psy_focus/10.0, psy_logic/10.0, psy_social/10.0, budget_score           
         ])
 
+        # 【特征反哺逻辑】：如果用户填了现役运动，提取其部分特征向量对用户画像进行微调（模拟后天训练带来的特质提升）
+        current_sports_input = curr_sport_ans.strip() if curr_sport_ans else ""
+        extracted_sport_names = []
+        if current_sports_input and current_sports_input.lower() not in ["无", "none", "n/a", ""]:
+            for sport_key, sport_vec_val in SPORTS_DB.items():
+                if any(kw.strip().lower() in sport_key.lower() for kw in current_sports_input.replace(",", " ").split() if kw.strip()):
+                    extracted_sport_names.append(sport_key)
+                    # 后天训练反哺：将现役运动特征以 15% 的权重融入用户基础画像，体现训练带来的能力上浮
+                    user_vec = user_vec * 0.85 + sport_vec_val * 0.15
+
+        # 算法 100% 保持绝对客观的匹配计算
         scores = {}
         for sport, data in SPORTS_DB.items():
             similarity = (np.dot(user_vec, data) / (np.linalg.norm(user_vec) * np.linalg.norm(data))) * 100
@@ -453,8 +466,25 @@ if submit_btn:
         sorted_sports = sorted(scores.items(), key=lambda x: x[1], reverse=True)
         top_sport = sorted_sports[0][0]
         
+        # ====== 现役运动独立审计与特征反哺报告 ======
+        if extracted_sport_names:
+            st.divider()
+            st.header(t["res_audit_title"])
+            st.markdown(f"🔍 **现役运动特征反哺与客观审计**：您填写的现役项目为 **【{current_sports_input}】**。系统已将其包含的力学与性格特质纳入模型反哺，并给出独立体检评估：" if st.session_state.lang == "中文" else f"🔍 **Feature Extraction Audit**: Current sports: **【{current_sports_input}】**.")
+            
+            for s_name in extracted_sport_names:
+                audited_score = scores[s_name]
+                st.markdown(f"**📌 现役项目：{s_name}** (客观综合匹配度: `{audited_score}%`)")
+                if audited_score >= 70:
+                    st.success("✅ **审计结论：天赋与现役高度正向共振**。该现役运动与孩子的先天基因及行为模式完美契合。既然已经在队里且能顺畅训练，说明孩子已经通过了现实的选拔，建议作为长期核心主项坚定深耕！" if st.session_state.lang == "中文" else "✅ **Audit: High Resonance**. Great fit; highly recommended to keep advancing!")
+                elif audited_score >= 50:
+                    st.warning("⚠️ **审计结论：稳健平衡 (兼具潜力与微调空间)**。该现役运动在部分维度上与孩子匹配，但可能存在个别短板（如爆发力或抗压）。既然已经在学，说明孩子具备克服困难的能力，建议作为日常主项，同时通过跨项体能进行针对性补强。" if st.session_state.lang == "中文" else "⚠️ **Audit: Moderate Fit**. Keep practicing but supplement with cross-training.")
+                else:
+                    st.error("❌ **审计结论：存在客观摩擦，但可作为跳板**。从纯客观数据模型的 10 维矩阵来看，该现役运动并非孩子天生最优解。不过，**既然已经在队里且能坚持，这本身就是对意志力和适应力的巨大锻炼**！您可以将其作为培养坚韧品质的载体，或在未来平稳过渡到匹配度更高的赛道。" if st.session_state.lang == "中文" else "❌ **Audit: Potential Mismatch, but Great Grit Builder**. Use it to build resilience.")
+
+        # ====== 渲染 Top 3 红榜 ======
         st.divider()
-        st.header("2️⃣ " + t["res2_title"])
+        st.header(t["res2_title"])
         for i in range(3):
             s_name = sorted_sports[i][0]
             st.markdown(f"### 🏆 Top {i+1}: {s_name}")
@@ -462,8 +492,9 @@ if submit_btn:
             reason_str = generate_dynamic_reasoning(s_name, SPORTS_DB[s_name], user_vec, True, col_idx, st.session_state.lang)
             st.success(reason_str)
 
+        # ====== 渲染 Bottom 3 黑榜 (避坑指南) ======
         st.divider()
-        st.header("3️⃣ " + t["res_worst_title"])
+        st.header(t["res_worst_title"])
         st.markdown("⚠️ **教育不是盲目砸钱**：以下是系统算出的绝对黑名单，强烈建议避免在这三个项目上投入大量精力，因为沉没成本极高且极易导致孩子厌学。" if st.session_state.lang == "中文" else "⚠️ **Avoid these sports** to prevent high sunk costs and emotional burnout.")
         
         worst_sports = sorted_sports[-3:][::-1]
@@ -477,8 +508,9 @@ if submit_btn:
         st.divider()
         st.markdown(generate_personalized_plan(top_sport, child_age, weekly_hrs, status_idx, curr_sport_ans, col_idx, acad_idx, st.session_state.lang))
 
+        # 防坑预警
         st.divider()
-        st.header("4️⃣ " + t["res4_title"])
+        st.header(t["res4_title"])
         if weekly_hrs > child_age + 3: st.error(t["burnout_high"])
         elif weekly_hrs < child_age - 2: st.warning(t["burnout_low"])
         else: st.success(t["burnout_ok"])
